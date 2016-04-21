@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Api Keys</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Public</th>
+      <th>Secret</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @api_keys.each do |api_key| %>
+      <tr>
+        <td><%= api_key.user %></td>
+        <td><%= api_key.public %></td>
+        <td><%= api_key.secret %></td>
+        <td><%= link_to 'Show', user_api_key_path(@user, api_key) %></td>
+        <td><%= link_to 'Edit', edit_user_api_key_path(@user, api_key) %></td>
+        <td><%= link_to 'Destroy', user_api_key_path(@user, api_key), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Api key', new_user_api_key_path(@user) %>
