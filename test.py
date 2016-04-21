@@ -31,6 +31,8 @@ class HMACAuth(AuthBase):
         self.add_auth_header(r)
         return r
 
+# Based on the api-auth ruby gem, which was released under MIT license, see https://raw.githubusercontent.com/mgomes/api_auth/v1.5.0/LICENSE.txt
+
     def add_auth_header(self, r):
         r.headers['Authorization'] = self.auth_header(r)
 
