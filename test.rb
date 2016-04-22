@@ -36,5 +36,5 @@ url = "#{api_base}/test"
 response = RestClient.get add_nonce(url)
 puts response
 
-response = RestClient.post add_nonce(url), data: "post test"
+response = RestClient.post url, data: "post test", nonce: last_nonce + 1
 puts response
