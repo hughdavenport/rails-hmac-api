@@ -18,11 +18,10 @@ class HMACAuth(AuthBase):
 
 # Based on the api-auth ruby gem, which was released under MIT license, see https://raw.githubusercontent.com/mgomes/api_auth/v1.5.0/LICENSE.txt
 
-    def find_header(self, r, l):
-        for header in l:
-            for key, value in r.headers.iteritems():
-                if key.upper() == header:
-                    return value
+    def find_header(self, r, header):
+        for key, value in r.headers.iteritems():
+            if key.upper() == header:
+                return value
         return ""
 
     def add_header(self, r, key, value):
@@ -32,8 +31,8 @@ class HMACAuth(AuthBase):
         if self.method(r) in "POST PUT".split():
             m = hashlib.md5()
             m.update(r.body if r.body else "")
-            md5 = m.hexdigest()
-            self.add_header(r, 'X-Payload-MD5', md5)
+            md5 = m.digest()
+            self.add_header(r, 'X-Payload-MD5', b64encode(md5))
 
     def add_public_key_header(self, r):
         self.add_header(r, 'X-HMAC-Public-Key', self.public_key)

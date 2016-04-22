@@ -28,3 +28,6 @@ def add_nonce(url):
 url = "%s/test" % (api_base)
 r = requests.get(add_nonce(url), auth=auth)
 print r.text
+
+r = requests.post(url, data={'data': 'post test', 'nonce': last_nonce() + 1}, auth=auth)
+print r.text
