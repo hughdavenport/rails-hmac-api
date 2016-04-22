@@ -1,4 +1,4 @@
-require 'api-auth'
+require './hmac-auth'
 require 'rest-client'
 
 def api_base
@@ -10,13 +10,15 @@ def api_base
   "http#{'s' if https}://#{hostname}#{":#{port}" if port}/#{base_endpoint}"
 end
 
-public_token = "Ch7/DHoFIdIDaX5m4mqGxQ=="
-secret_token = "6Ql2ZXcYqOGLdwwdWbcnCJq0N32hX8NA6AWr6wewx/T+oLcWOuynddnrETxkP9cHB7jXNs09NL3vY/BGeDxxWw=="
+auth = HMACAuth.new(public_key: "Ch7/DHoFIdIDaX5m4mqGxQ==", private_key: "6Ql2ZXcYqOGLdwwdWbcnCJq0N32hX8NA6AWr6wewx/T+oLcWOuynddnrETxkP9cHB7jXNs09NL3vY/BGeDxxWw==")
 
 RestClient.add_before_execution_proc do |request, params|
-  request.body = RestClient::Payload.generate(params[:payload]).to_s if params.include?(:payload)
-  ApiAuth.sign!(request, public_token, secret_token)
-  request.body = nil
+  endpoint_path = request.path
+  method = request.method
+  headers = request
+  payload = RestClient::Payload.generate(params[:payload]).to_s if params.include?(:payload)
+
+  auth.sign!(endpoint_path, method, headers, payload)
 end
 
 def last_nonce
