@@ -22,7 +22,7 @@ class HMACAuth
   end
 
   def valid?(endpoint_path, method, headers, payload)
-    find_header(headers, SIGNATURE_HEADERS) == signature(endpoint_path, method, headers, payload)
+    md5_header_matches?(headers, payload) && find_header(headers, SIGNATURE_HEADERS) == signature(endpoint_path, method, headers, payload)
   end
 
   private
