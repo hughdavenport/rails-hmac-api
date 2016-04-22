@@ -20,7 +20,7 @@ class HMACAuth(AuthBase):
 
     def find_header(self, r, header):
         for key, value in r.headers.iteritems():
-            if key.upper() == header:
+            if key == header:
                 return value
         return ""
 
@@ -54,7 +54,7 @@ class HMACAuth(AuthBase):
         return r.method.upper()
 
     def payload_md5(self, r):
-        return self.find_header(r, "X-PAYLOAD-MD5")
+        return self.find_header(r, "X-Payload-MD5")
 
     def uri(self, r):
         url = re.sub(r'https?://[^,?/]*', '', r.url)
