@@ -1,4 +1,4 @@
-require './hmac-auth'
+require './hmac_auth'
 class ApiController < ApplicationController
   before_action :api_authenticate
   before_action :check_nonce, except: [:last_nonce]

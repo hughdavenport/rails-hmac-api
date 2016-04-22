@@ -1,4 +1,4 @@
-require './hmac-auth'
+require './hmac_auth'
 require 'rest-client'
 
 def api_base
