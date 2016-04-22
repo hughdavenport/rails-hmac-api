@@ -17,7 +17,8 @@ class ApiController < ApplicationController
     payload = request.raw_post
 
     @keys = ApiKey.find_by_public(request.env['HTTP_X_HMAC_PUBLIC_KEY'])
-    head(:unauthorized) unless @keys && HMACAuth.new(public_key: @keys.public, private_key: @keys.secret).valid?(endpoint_path, method, headers, payload)
+    auth = HMACAuth.new(public_key: @keys.public, private_key: @keys.secret) if @keys
+    head(:unauthorized) unless auth && auth.valid?(endpoint_path, method, headers, payload)
   end
 
   def check_nonce
