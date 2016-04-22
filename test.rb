@@ -14,7 +14,9 @@ public_token = "Ch7/DHoFIdIDaX5m4mqGxQ=="
 secret_token = "6Ql2ZXcYqOGLdwwdWbcnCJq0N32hX8NA6AWr6wewx/T+oLcWOuynddnrETxkP9cHB7jXNs09NL3vY/BGeDxxWw=="
 
 RestClient.add_before_execution_proc do |request, params|
+  request.body = RestClient::Payload.generate(params[:payload]).to_s if params.include?(:payload)
   ApiAuth.sign!(request, public_token, secret_token)
+  request.body = nil
 end
 
 def last_nonce
@@ -32,4 +34,7 @@ end
 
 url = "#{api_base}/test"
 response = RestClient.get add_nonce(url)
+puts response
+
+response = RestClient.post add_nonce(url), data: "post test"
 puts response

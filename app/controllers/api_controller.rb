@@ -1,6 +1,7 @@
 class ApiController < ApplicationController
   before_action :api_authenticate
   before_action :check_nonce, except: [:last_nonce]
+  skip_before_filter :verify_authenticity_token
 
   def last_nonce
     render inline: @keys.last_nonce.to_i.to_s

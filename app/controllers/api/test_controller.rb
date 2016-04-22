@@ -1,7 +1,10 @@
 module Api
   class TestController < ApiController
-    def index
+    def get
       render inline: "test"
+    end
+    def post
+      render inline: params["data"]
     end
   end
 end
